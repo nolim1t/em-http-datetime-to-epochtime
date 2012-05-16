@@ -60,6 +60,12 @@ class HTTPHandler < EM::Http::Server
   end
 end
 
+if ENV['PORT'] != nil
+  port = ENV['PORT'].to_i
+else
+  port = 8088
+end
 EM::run do
-  EM::start_server("0.0.0.0", 8088, HTTPHandler)
+  puts "Starting server on port " + port.to_s
+  EM::start_server("0.0.0.0", port, HTTPHandler)
 end
