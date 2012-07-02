@@ -12,7 +12,7 @@ require 'em-http-server'
 require 'cgi'
 require 'active_support/all'
 
-class HTTPHandler < EM::Http::Server
+class HTTPHandler < EM::HttpServer::Server
   def process_http_request
     puts @http_query_string
     puts @http_request_uri
