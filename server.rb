@@ -49,6 +49,40 @@ class HTTPHandler < EM::HttpServer::Server
       else
         body = "0"
       end
+    elsif @http_request_uri == "/gethour"
+      if @http_query_string != nil
+        parse_request = @http_query_string.split('&')
+        tz = ''
+        ts = ''
+        if parse_request.length == 2
+          parse_request.each {|param|
+            kv_array = param.split('=')
+            if kv_array[0] == 'tz'
+              tz = CGI::unescape(kv_array[1])
+            elsif kv_array[0] == 'ts'
+              ts = CGI::unescape(kv_array[1])
+            end   
+          }
+          if tz != '' and ts != ''
+            begin
+              status = 200
+              Time.zone = tz
+              body = Time.zone.at(ts.to_i).hour
+            rescue
+              puts "Error happened: #{$!}"
+              status = 500
+              body = 0
+            end
+          else
+            body = '0'
+          end
+        else
+          body = '0'
+        end
+      else
+        # No parameters for /gethour
+        body = '0'
+      end
     else
       status= 404
       body = '0'
