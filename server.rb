@@ -40,14 +40,14 @@ class HTTPHandler < EM::HttpServer::Server
             body = Time.zone.parse(ds).to_i.to_s
           rescue
             status = 500
-            body = "0"
+            body = '-1'
             puts "#{$!}"
           end
         else
-          body = "0"
+          body = '-1'
         end
       else
-        body = "0"
+        body = '-1'
       end
     elsif @http_request_uri == "/gethour"
       if @http_query_string != nil
@@ -71,21 +71,21 @@ class HTTPHandler < EM::HttpServer::Server
             rescue
               puts "Error happened: #{$!}"
               status = 500
-              body = 0
+              body = '-1'
             end
           else
-            body = '0'
+            body = '-1'
           end
         else
-          body = '0'
+          body = '-1'
         end
       else
         # No parameters for /gethour
-        body = '0'
+        body = '-1'
       end
     else
       status= 404
-      body = '0'
+      body = '-1'
     end
     response.status = status
     response.content_type 'text/plain'
